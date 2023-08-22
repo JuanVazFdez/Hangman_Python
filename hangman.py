@@ -25,6 +25,8 @@ def main():
         print('\n\n\n\n\n\n\nLives left: ', lives)
         print('Already used letters: ', ' '.join(guessedLetters))
 
+        print(displayHangman(lives))
+
         #prints the word encrypted only showing the already guessed letters (ie: W - R D)
         encryptedWord = [letter if letter in guessedLetters else '-' for letter in word]
         print('Current word: ', ' '.join(encryptedWord))
@@ -47,7 +49,134 @@ def main():
     if lives > 0:
         print('YAY!!!!!!! You guessed the word ', word, ' and with ', lives, 'lives left!!!!!!')
     else:
+    
+        print('\n\n\n\n\n\n\n\n', displayHangman(lives))
         print('Sorry, you failed. The word was ', word)
+
+
+def displayHangman(lives):
+    stages = [  # you failed
+                """
+                   --------
+                   |/     |
+                   |      O
+                   |     \\|/
+                   |      |
+                   |     / \\
+                --------------
+                """,
+                # head, torso, both arms, and one leg
+                """
+                   --------
+                   |/     |
+                   |      O
+                   |     \\|/
+                   |      |
+                   |     / 
+                --------------
+                """,
+                # head, torso, and both arms
+                """
+                   --------
+                   |/     |
+                   |      O
+                   |     \\|/
+                   |      |
+                   |      
+                --------------
+                """,
+                # head, torso, and one arm
+                """
+                   --------
+                   |/     |
+                   |      O
+                   |     \\|
+                   |      |
+                   |     
+                --------------
+                """,
+                # head and torso
+                """
+                   --------
+                   |/     |
+                   |      O
+                   |      |
+                   |      |
+                   |     
+                --------------
+                """,
+                # head
+                """
+                   --------
+                   |/     |
+                   |      O
+                   |    
+                   |      
+                   |     
+                --------------
+                """,
+                # rope
+                """
+                   --------
+                   |/     |
+                   |      
+                   |    
+                   |      
+                   |     
+                --------------
+                """,
+                # the structure
+                """
+                   --------
+                   |/     
+                   |      
+                   |    
+                   |      
+                   |     
+                --------------
+                """,
+                # floor and vertical and horizontal posts
+                """
+                   --------
+                   |     
+                   |      
+                   |    
+                   |      
+                   |     
+                --------------
+                """,
+                # floor and vetical post
+                """
+                   
+                   |      
+                   |      
+                   |    
+                   |      
+                   |     
+                --------------
+                """,
+                # just the floor
+                """
+                   
+                         
+                         
+                       
+                         
+                       
+                --------------
+                """,
+                # initial empty state
+                """
+                   
+                         
+                         
+                       
+                         
+                        
+                   
+                """
+    ]
+    return stages[lives]
 
 
 if __name__ == "__main__":
