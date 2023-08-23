@@ -1,6 +1,9 @@
 import random
 import string
+from language import english
+from language import spanish
 from words import words
+from words import wordsEsp
 
 
 def getValidWord(words):
@@ -13,49 +16,59 @@ def getValidWord(words):
 
 
 def main():
-    word = getValidWord(words)
-    wordLetters = set(word)
-    abc = set(string.ascii_uppercase)
-    guessedLetters = set()
+   texts = {}
+   lang = "n/a"
+   abc = set(string.ascii_uppercase)
+   while lang != 'esp' and lang != 'eng':
+      lang = input('To play in English, type "eng"\nPara jugar en Español, introduce "esp"').lower()
+   if lang == 'esp':
+      texts = spanish
+      word = getValidWord(wordsEsp)
+      abc.add('Ñ')
+   elif lang == 'eng':
+      texts = english
+      word = getValidWord(words)
+   wordLetters = set(word)
+   
+   guessedLetters = set()
 
-    lives = 11
+   lives = 11
 
-    while len(wordLetters) > 0 and lives > 0:
-        #prints already used letters
-        print('\n\n\n\n\n\n\nLives left: ', lives)
-        print('Already used letters: ', ' '.join(guessedLetters))
+   while len(wordLetters) > 0 and lives > 0:
+      #prints already used letters
+      print(texts['lifes'], lives)
+      print(texts['used'], ' '.join(guessedLetters))
 
-        print(displayHangman(lives))
+      print(displayHangman(lives))
 
-        #prints the word encrypted only showing the already guessed letters (ie: W - R D)
-        encryptedWord = [letter if letter in guessedLetters else '-' for letter in word]
-        print('Current word: ', ' '.join(encryptedWord))
+      #prints the word encrypted only showing the already guessed letters (ie: W - R D)
+      encryptedWord = [letter if letter in guessedLetters else '-' for letter in word]
+      print(texts['word'], ' '.join(encryptedWord))
 
-        userInput = input("Guess a letter: ").upper()
-        if userInput in abc - guessedLetters:
-            guessedLetters.add(userInput)
-            if userInput in wordLetters:
-                wordLetters.remove(userInput)
-            else:
-                lives-=1
-                print("That letter is not in the word")
+      userInput = input(texts['input']).upper()
+      if userInput in abc - guessedLetters:
+         guessedLetters.add(userInput)
+         if userInput in wordLetters:
+            wordLetters.remove(userInput)
+         else:
+            lives-=1
+            print(texts['wrong'])
 
-        elif userInput in guessedLetters:
-            print("\nYou have already used that letter")
+      elif userInput in guessedLetters:
+         print(texts['repeated'])
 
-        else:
-            print("\nWrong character. Try again")
+      else:
+         print(texts['wrongCharacter'])
 
-    if lives > 0:
-        print('YAY!!!!!!! You guessed the word ', word, ' and with ', lives, 'lives left!!!!!!')
-    else:
-    
-        print('\n\n\n\n\n\n\n\n', displayHangman(lives))
-        print('Sorry, you failed. The word was ', word)
+   if lives > 0:
+      print(texts['victory'].format(word, lives))
+   else:
+      print('\n\n\n\n\n\n\n\n', displayHangman(lives))
+      print(texts['defeat'], word)
 
 
 def displayHangman(lives):
-    stages = [  # you failed
+   stages = [  # you failed
                 """
                    --------
                    |/     |
@@ -175,9 +188,9 @@ def displayHangman(lives):
                         
                    
                 """
-    ]
-    return stages[lives]
+   ]
+   return stages[lives]
 
 
 if __name__ == "__main__":
-    main()
+   main()
